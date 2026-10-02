@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GO Transit Weekend Pass</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      margin: 0;
+      min-height: 100%;
+      font-family: Arial, Helvetica, sans-serif;
+      background: #4f477f;
+    }
+
+    body {
+      display: flex;
+      justify-content: center;
+    }
+
+    .ticket {
+      width: 100%;
+      max-width: 480px;
+      min-height: 100vh;
+      background: white;
+      overflow: hidden;
+      color: #30343b;
+    }
+
+    /* =========================
+       HEADER
+    ========================= */
+
+    .header {
+      height: 415px;
+      background: #4f477f;
+      color: white;
+      position: relative;
+      text-align: center;
+      padding-top: 43px;
+    }
+
+    .header::before,
+    .header::after {
+      content: "";
+      position: absolute;
+      top: 190px;
+      width: 14px;
+      height: 14px;
+      background: white;
+      border-radius: 50%;
+    }
+
+    .header::before {
+      left: 29px;
+    }
+
+    .header::after {
+      right: 29px;
+    }
+
+    /* Approximation of GO logo */
+    .go-logo {
+      width: 170px;
+      height: 90px;
+      margin: 0 auto 35px;
+      position: relative;
+    }
+
+    .logo-circle {
+      position: absolute;
+      width: 82px;
+      height: 82px;
+      right: 8px;
+      top: 0;
+      background: white;
+      border-radius: 50%;
+    }
+
+    .logo-circle::before {
+      content: "";
+      position: absolute;
+      left: -1px;
+      top: 38px;
+      width: 85px;
+      height: 9px;
+      background: #4f477f;
+    }
+
+    .logo-circle::after {
+      content: "";
+      position: absolute;
+      left: 39px;
+      top: 0;
+      width: 9px;
+      height: 82px;
+      background: #4f477f;
+    }
+
+    .logo-shape {
+      position: absolute;
+      left: 4px;
+      top: 0;
+      width: 70px;
+      height: 82px;
+      background: white;
+      border-radius: 50% 0 0 50%;
+    }
+
+    .logo-shape::after {
+      content: "";
+      position: absolute;
+      width: 9px;
+      height: 82px;
+      right: 18px;
+      top: 0;
+      background: #4f477f;
+    }
+
+    .go-text {
+      font-size: 28px;
+      font-weight: 800;
+      letter-spacing: 1px;
+      margin-bottom: 34px;
+    }
+
+    .route {
+      font-size: 21px;
+      line-height: 1.35;
+      font-weight: 400;
+      padding: 0 30px;
+    }
+
+    /* ticket semicircle notch */
+
+    .notch {
+      position: absolute;
+      bottom: -20px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 50px;
+      height: 50px;
+      background: white;
+      border-radius: 50%;
+      z-index: 3;
+    }
+
+    .notch::after {
+      content: "";
+      position: absolute;
+      inset: 8px;
+      border-radius: 50%;
+      background: #4f477f;
+    }
+
+    /* =========================
+       PASS INFORMATION
+    ========================= */
+
+    .pass-info {
+      height: 390px;
+      background: white;
+      position: relative;
+      padding-top: 70px;
+    }
+
+    .pass-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
+      text-align: center;
+      min-height: 180px;
+    }
+
+    .pass-count {
+      font-size: 80px;
+      font-weight: 300;
+      line-height: .8;
+      margin-bottom: 25px;
+    }
+
+    .pass-label {
+      font-size: 22px;
+      font-weight: 800;
+      margin-bottom: 26px;
+    }
+
+    .pass-description {
+      font-size: 18px;
+      font-weight: 400;
+    }
+
+    .ticket-icon {
+      width: 58px;
+      height: 48px;
+      margin: 0 auto 28px;
+      position: relative;
+    }
+
+    /* Train icon */
+    .train {
+      width: 46px;
+      height: 62px;
+      margin: 0 auto 20px;
+      background: #b5b7ba;
+      border-radius: 11px 11px 7px 7px;
+      position: relative;
+    }
+
+    .train::before {
+      content: "";
+      position: absolute;
+      width: 28px;
+      height: 18px;
+      background: white;
+      top: 9px;
+      left: 9px;
+      border-radius: 2px;
+    }
+
+    .train::after {
+      content: "●  ●";
+      position: absolute;
+      bottom: 3px;
+      left: 7px;
+      color: white;
+      font-size: 13px;
+      letter-spacing: 2px;
+    }
+
+    .ticket-card {
+      width: 58px;
+      height: 38px;
+      border: 8px solid #555b61;
+      border-radius: 5px;
+      transform: rotate(-18deg);
+      margin: 0 auto 29px;
+      position: relative;
+    }
+
+    .ticket-card::after {
+      content: "";
+      position: absolute;
+      right: 10px;
+      top: -7px;
+      width: 6px;
+      height: 37px;
+      background: #555b61;
+    }
+
+    /* =========================
+       TICKET NUMBER / BARCODE
+    ========================= */
+
+    .barcode-section {
+      border-top: 4px dotted #b9b9b9;
+      margin: 0 7px;
+      padding-top: 24px;
+      text-align: center;
+    }
+
+    .ticket-number {
+      font-size: 21px;
+      margin-bottom: 27px;
+      color: #111;
+    }
+
+    .ticket-number strong {
+      font-size: 25px;
+      letter-spacing: 1px;
+    }
+
+    .barcode {
+      height: 82px;
+      margin: 0 48px;
+      display: flex;
+      align-items: stretch;
+      justify-content: center;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .barcode-lines {
+      width: 100%;
+      height: 100%;
+      background:
+        repeating-linear-gradient(
+          90deg,
+          #b8bbc0 0px,
+          #b8bbc0 5px,
+          white 5px,
+          white 9px,
+          #b8bbc0 9px,
+          #b8bbc0 13px,
+          white 13px,
+          white 17px,
+          #b8bbc0 17px,
+          #b8bbc0 26px,
+          white 26px,
+          white 31px
+        );
+    }
+
+    .active-box {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      background: white;
+      padding: 9px 25px;
+      color: #696091;
+      font-size: 25px;
+      letter-spacing: 2px;
+      border: 7px dotted #b8bbc0;
+    }
+
+    .timers {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      margin-top: 35px;
+      text-align: center;
+    }
+
+    .timer-title {
+      font-size: 12px;
+      font-weight: 800;
+      margin-bottom: 9px;
+    }
+
+    .timer-value {
+      font-size: 20px;
+      font-weight: 700;
+    }
+
+    /* =========================
+       BOTTOM COUNTDOWN
+    ========================= */
+
+    .bottom {
+      min-height: 430px;
+      background: #4f477f;
+      color: white;
+      text-align: center;
+      padding: 70px 35px 40px;
+    }
+
+    .bottom-message {
+      font-size: 21px;
+      line-height: 1.45;
+      margin-bottom: 38px;
+    }
+
+    .countdown {
+      font-size: 50px;
+      font-weight: 300;
+      letter-spacing: 1px;
+    }
+
+    /* =========================
+       MOBILE
+    ========================= */
+
+    @media (max-width: 400px) {
+      .header {
+        height: 380px;
+      }
+
+      .route {
+        font-size: 19px;
+      }
+
+      .pass-info {
+        height: 370px;
+      }
+
+      .pass-count {
+        font-size: 68px;
+      }
+
+      .pass-label {
+        font-size: 19px;
+      }
+
+      .pass-description {
+        font-size: 16px;
+      }
+
+      .bottom-message {
+        font-size: 19px;
+      }
+
+      .countdown {
+        font-size: 44px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <main class="ticket">
+
+    <!-- HEADER -->
+    <section class="header">
+
+      <div class="go-logo">
+        <div class="logo-shape"></div>
+        <div class="logo-circle"></div>
+      </div>
+
+      <div class="go-text">
+        GO TRANSIT
+      </div>
+
+      <div class="route">
+        Bramalea GO to Allandale Waterfront GO -
+        <br />
+        Weekend Pass
+      </div>
+
+      <div class="notch"></div>
+    </section>
+
+
+    <!-- PASS INFO -->
+    <section class="pass-info">
+
+      <div class="pass-grid">
+
+        <div>
+          <div class="pass-count">x1</div>
+
+          <div class="pass-label">
+            Passenger(s)
+          </div>
+
+          <div class="pass-description">
+            1x Weekend Pass
+          </div>
+        </div>
+
+
+        <div>
+          <div class="train"></div>
+
+          <div class="pass-label">
+            Multi Use Pass
+          </div>
+        </div>
+
+      </div>
+
+
+      <!-- BARCODE -->
+      <div class="barcode-section">
+
+        <div class="ticket-number">
+          Ticket Number:
+          <strong>MZ68122693</strong>
+        </div>
+
+        <div class="barcode">
+          <div class="barcode-lines"></div>
+
+          <div class="active-box">
+            ACTIVE
+          </div>
+        </div>
+
+        <div class="timers">
+
+          <div>
+            <div class="timer-title">
+              CURRENT DATE & TIME:
+            </div>
+
+            <div class="timer-value" id="currentTime">
+              --
+            </div>
+          </div>
+
+          <div>
+            <div class="timer-title">
+              TIME SINCE ACTIVATION:
+            </div>
+
+            <div class="timer-value" id="activationTime">
+              00:18:59
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- BOTTOM -->
+    <section class="bottom">
+
+      <div class="bottom-message">
+        Please show proof of your ticket to
+        <br />
+        the Customer Protective Officers
+        <br />
+        when asked
+      </div>
+
+      <div class="countdown" id="countdown">
+        23:41:00
+      </div>
+
+    </section>
+
+  </main>
+
+
+  <script>
+    /*
+      Activation timestamp.
+      Change this to whatever activation time you want.
+    */
+
+    const activation = new Date();
+    activation.setSeconds(activation.getSeconds() - (18 * 60 + 59));
+
+
+    /*
+      Ticket expires 24 hours after activation.
+    */
+
+    const expiration =
+      new Date(activation.getTime() + 24 * 60 * 60 * 1000);
+
+
+    function pad(number) {
+      return String(number).padStart(2, "0");
+    }
+
+
+    function updateClock() {
+
+      const now = new Date();
+
+
+      // Current date/time
+
+      const current =
+        `${now.toLocaleString("en-US", {
+          month: "short",
+          day: "numeric",
+          year: "numeric"
+        })} ${now.toLocaleTimeString("en-US", {
+          hour: "2-digit",
+          minute: "2-digit",
+          second: "2-digit",
+          hour12: true
+        })}`;
+
+      document.getElementById("currentTime").textContent = current;
+
+
+      // Time since activation
+
+      const elapsed =
+        Math.max(0, now - activation);
+
+      const totalSeconds =
+        Math.floor(elapsed / 1000);
+
+      const hours =
+        Math.floor(totalSeconds / 3600);
+
+      const minutes =
+        Math.floor((totalSeconds % 3600) / 60);
+
+      const seconds =
+        totalSeconds % 60;
+
+      document.getElementById("activationTime").textContent =
+        `${pad(hours)}:${pad(minutes)}:${pad(seconds)}`;
+
+
+      // Countdown
+
+      const remaining =
+        Math.max(0, expiration - now);
+
+      const remainingSeconds =
+        Math.floor(remaining / 1000);
+
+      const h =
+        Math.floor(remainingSeconds / 3600);
+
+      const m =
+        Math.floor((remainingSeconds % 3600) / 60);
+
+      const s =
+        remainingSeconds % 60;
+
+      document.getElementById("countdown").textContent =
+        `${pad(h)}:${pad(m)}:${pad(s)}`;
+    }
+
+
+    updateClock();
+
+    setInterval(updateClock, 1000);
+  </script>
+
+</body>
+</html>
