@@ -1,0 +1,364 @@
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  font-family: Arial, Helvetica, sans-serif;
+  background: #4f477f;
+}
+
+body {
+  display: flex;
+  justify-content: center;
+  align-items: stretch;
+}
+
+.ticket {
+  width: 100%;
+  max-width: 480px;
+  height: 100dvh;
+  min-height: 0;
+  background: #fff;
+  overflow: hidden;
+  color: #30343b;
+  display: flex;
+  flex-direction: column;
+}
+
+/* HEADER */
+
+.header {
+  flex: 0 0 34%;
+  min-height: 0;
+  background: #4f477f;
+  color: #fff;
+  position: relative;
+  text-align: center;
+  padding-top: 4vh;
+}
+
+.header:before,
+.header:after {
+  content: "";
+  position: absolute;
+  top: 46%;
+  width: 12px;
+  height: 12px;
+  background: #fff;
+  border-radius: 50%;
+}
+
+.header:before {
+  left: 25px;
+}
+
+.header:after {
+  right: 25px;
+}
+
+.go-logo {
+  width: 145px;
+  height: 72px;
+  margin: 0 auto 20px;
+  position: relative;
+}
+
+.logo-circle {
+  position: absolute;
+  width: 70px;
+  height: 70px;
+  right: 8px;
+  top: 0;
+  background: #fff;
+  border-radius: 50%;
+}
+
+.logo-circle:before {
+  content: "";
+  position: absolute;
+  left: -1px;
+  top: 32px;
+  width: 73px;
+  height: 8px;
+  background: #4f477f;
+}
+
+.logo-circle:after {
+  content: "";
+  position: absolute;
+  left: 33px;
+  top: 0;
+  width: 8px;
+  height: 70px;
+  background: #4f477f;
+}
+
+.logo-shape {
+  position: absolute;
+  left: 4px;
+  top: 0;
+  width: 60px;
+  height: 70px;
+  background: #fff;
+  border-radius: 50% 0 0 50%;
+}
+
+.logo-shape:after {
+  content: "";
+  position: absolute;
+  width: 8px;
+  height: 70px;
+  right: 16px;
+  top: 0;
+  background: #4f477f;
+}
+
+.go-text {
+  font-size: 25px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  margin-bottom: 18px;
+}
+
+.route {
+  font-size: 18px;
+  line-height: 1.3;
+  padding: 0 25px;
+}
+
+.notch {
+  position: absolute;
+  bottom: -16px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 40px;
+  height: 40px;
+  background: #fff;
+  border-radius: 50%;
+  z-index: 3;
+}
+
+.notch:after {
+  content: "";
+  position: absolute;
+  inset: 7px;
+  border-radius: 50%;
+  background: #4f477f;
+}
+
+/* PASS */
+
+.pass-info {
+  flex: 0 0 44%;
+  min-height: 0;
+  background: #fff;
+  position: relative;
+  padding: 20px 0 0;
+  margin: 0;
+  overflow: hidden;
+}
+
+.pass-grid {
+  height: 42%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  text-align: center;
+  margin: 0;
+}
+
+.pass-count {
+  font-size: clamp(50px, 8vw, 70px);
+  font-weight: 300;
+  line-height: .8;
+  margin-bottom: 15px;
+}
+
+.pass-label {
+  font-size: clamp(16px, 3.5vw, 20px);
+  font-weight: 800;
+  margin-bottom: 12px;
+}
+
+.pass-description {
+  font-size: clamp(14px, 3vw, 17px);
+}
+
+.train {
+  width: 38px;
+  height: 52px;
+  margin: 0 auto 12px;
+  background: #b5b7ba;
+  border-radius: 9px 9px 6px 6px;
+  position: relative;
+}
+
+.train:before {
+  content: "";
+  position: absolute;
+  width: 23px;
+  height: 15px;
+  background: #fff;
+  top: 8px;
+  left: 7px;
+  border-radius: 2px;
+}
+
+.train:after {
+  content: "●  ●";
+  position: absolute;
+  bottom: 3px;
+  left: 5px;
+  color: #fff;
+  font-size: 10px;
+  letter-spacing: 1px;
+}
+
+.barcode-section {
+  border-top: 3px dotted #b9b9b9;
+  margin: 0 7px;
+  padding-top: 12px;
+  text-align: center;
+}
+
+.ticket-number {
+  font-size: 17px;
+  margin-bottom: 12px;
+  color: #111;
+}
+
+.ticket-number strong {
+  font-size: 20px;
+  letter-spacing: 1px;
+}
+
+.barcode {
+  height: 55px;
+  margin: 0 35px;
+  overflow: hidden;
+  position: relative;
+}
+
+.barcode-lines {
+  width: 100%;
+  height: 100%;
+  background: repeating-linear-gradient(
+    90deg,
+    #b8bbc0 0,
+    #b8bbc0 4px,
+    #fff 4px,
+    #fff 7px,
+    #b8bbc0 7px,
+    #b8bbc0 10px,
+    #fff 10px,
+    #fff 14px,
+    #b8bbc0 14px,
+    #b8bbc0 20px,
+    #fff 20px,
+    #fff 24px
+  );
+}
+
+.active-box {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  background: #fff;
+  padding: 6px 18px;
+  color: #696091;
+  font-size: 19px;
+  letter-spacing: 2px;
+  border: 5px dotted #b8bbc0;
+}
+
+.timers {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  margin-top: 15px;
+  text-align: center;
+}
+
+.timer-title {
+  font-size: 9px;
+  font-weight: 800;
+  margin-bottom: 5px;
+}
+
+.timer-value {
+  font-size: 14px;
+  font-weight: 700;
+}
+
+/* BOTTOM */
+
+.bottom {
+  flex: 1;
+  min-height: 0;
+  background: #4f477f;
+  color: #fff;
+  text-align: center;
+  padding: 35px 20px 20px;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.bottom-message {
+  font-size: 17px;
+  line-height: 1.35;
+  margin-bottom: 25px;
+}
+
+.countdown {
+  font-size: clamp(35px, 8vw, 48px);
+  font-weight: 300;
+  letter-spacing: 1px;
+}
+
+/* SMALL PHONES */
+
+@media (max-height: 750px) {
+  .header {
+    flex-basis: 32%;
+    padding-top: 2vh;
+  }
+
+  .go-logo {
+    transform: scale(.85);
+    margin-bottom: 5px;
+  }
+
+  .go-text {
+    font-size: 21px;
+    margin-bottom: 10px;
+  }
+
+  .route {
+    font-size: 16px;
+  }
+
+  .pass-info {
+    flex-basis: 46%;
+    padding-top: 10px;
+  }
+
+  .pass-grid {
+    height: 40%;
+  }
+
+  .bottom {
+    padding-top: 20px;
+  }
+
+  .bottom-message {
+    font-size: 15px;
+    margin-bottom: 15px;
+  }
+}
